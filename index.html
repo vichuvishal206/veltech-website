@@ -58,9 +58,11 @@
                 <a href="#contact" class="nav-menu-link">Contact</a>
             </nav>
 
-            <div class="nav-right-actions">
                 <button type="button" onclick="openPublicServiceTracker()" class="btn-nav-tracker">
                     📋 Live Status
+                </button>
+                <button type="button" onclick="tryOpenOwnerPortal()" class="btn-nav-owner">
+                    🔒 Owner Login
                 </button>
                 <a href="https://wa.me/919677583546?text=Hello%20Vel%20Tech%20e-Sevai%20Maiyam,%20I%20have%20an%20inquiry:" target="_blank" class="btn-whatsapp-nav">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
@@ -1256,10 +1258,10 @@
          11. OWNER INQUIRIES DRAWER
          ==================================================================== -->
     <div class="drawer-overlay" id="ownerDrawerOverlay">
-        <div class="drawer-content">
+        <div class="drawer-content drawer-large">
             <div class="drawer-header" style="background:var(--navy-dark); color:#ffffff;">
                 <div>
-                    <h3 style="color:#ffffff; margin:0; font-size:1.15rem;">🔒 Owner Portal — Live Inquiries</h3>
+                    <h3 style="color:#ffffff; margin:0; font-size:1.15rem;">🔒 Owner Portal — Live Inquiries & Services</h3>
                     <small style="color:#94a3b8;">Proprietor: T. Moorthi • Agency Code: TNEFATPT221-01</small>
                 </div>
                 <button type="button" class="btn-close-modal" id="closeOwnerDrawerBtn" style="color:#ffffff; background:rgba(255,255,255,0.1);">&times;</button>
@@ -1269,7 +1271,7 @@
             <div class="owner-controls-bar">
                 <div style="display:flex; align-items:center; gap:6px;">
                     <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#10b981;"></span>
-                    <span style="font-weight:700; color:var(--navy-dark);">Owner Authenticated</span>
+                    <span style="font-weight:700; color:var(--navy-dark);">Owner Authenticated (T. Moorthi)</span>
                 </div>
                 <div style="display:flex; gap:8px;">
                     <button type="button" class="owner-btn-sm" onclick="openChangePasswordModal()">
@@ -1281,8 +1283,41 @@
                 </div>
             </div>
 
-            <div class="drawer-body" id="ownerInquiriesList">
-                <p style="text-align:center; padding:20px; color:var(--text-muted);">Loading inquiries...</p>
+            <!-- Owner Drawer Tabs (Live Inquiries, Services Catalog, Business Stats) -->
+            <div class="owner-drawer-tabs">
+                <button type="button" class="owner-tab-btn active" id="tabOwnerInquiriesBtn" onclick="switchOwnerTab('inquiries')">
+                    📋 Customer Inquiries <span class="owner-badge-count" id="ownerInquiryCountBadge">3</span>
+                </button>
+                <button type="button" class="owner-tab-btn" id="tabOwnerServicesBtn" onclick="switchOwnerTab('services')">
+                    ⚙️ Services Catalog <span class="owner-badge-count" id="ownerServiceCountBadge">24</span>
+                </button>
+                <button type="button" class="owner-tab-btn" id="tabOwnerStatsBtn" onclick="switchOwnerTab('stats')">
+                    📊 Quick Overview
+                </button>
+            </div>
+
+            <!-- TAB 1: Live Inquiries -->
+            <div class="owner-tab-pane active" id="ownerTabInquiriesPane">
+                <div class="drawer-body" id="ownerInquiriesList">
+                    <p style="text-align:center; padding:20px; color:var(--text-muted);">Loading inquiries...</p>
+                </div>
+            </div>
+
+            <!-- TAB 2: Services Catalog (Solves 'services la ethume varala' in Owner Portal) -->
+            <div class="owner-tab-pane" id="ownerTabServicesPane">
+                <div style="padding:12px 16px; background:#f8fafc; border-bottom:1px solid var(--border-light); display:flex; gap:10px;">
+                    <input type="text" id="ownerServiceSearchInput" placeholder="🔍 Search service name, documents, or category..." oninput="handleOwnerServiceSearch(this.value)" style="flex:1; padding:8px 12px; border:1px solid var(--border-light); border-radius:6px; font-size:0.85rem;">
+                </div>
+                <div class="drawer-body" id="ownerServicesList" style="padding:16px;">
+                    <p style="text-align:center; padding:20px; color:var(--text-muted);">Loading services catalog...</p>
+                </div>
+            </div>
+
+            <!-- TAB 3: Business Overview Stats -->
+            <div class="owner-tab-pane" id="ownerTabStatsPane">
+                <div class="drawer-body" id="ownerStatsContainer" style="padding:20px;">
+                    <!-- Dynamically rendered stats -->
+                </div>
             </div>
         </div>
     </div>
@@ -1513,7 +1548,7 @@
                     <button type="submit" class="btn-hero-primary" style="padding:8px 18px; font-size:0.85rem; border-radius:6px; background:var(--navy-dark); color:#ffffff; font-weight:700; border:none;">Unlock Dashboard →</button>
                 </div>
                 <div style="margin-top:14px; padding-top:10px; border-top:1px dashed var(--border-light); font-size:0.75rem; color:var(--text-muted); text-align:center;">
-                    Default passcode: <code style="background:#f1f5f9; padding:2px 6px; border-radius:4px; font-weight:700; color:var(--teal-primary);">veltech1212</code>
+                    Passcode: <code style="background:#f1f5f9; padding:2px 6px; border-radius:4px; font-weight:700; color:var(--teal-primary);">veltech1212</code> or <code style="background:#f1f5f9; padding:2px 6px; border-radius:4px; font-weight:700; color:var(--teal-primary);">moorthy2026</code>
                 </div>
             </form>
         </div>
